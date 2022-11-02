@@ -1,7 +1,9 @@
-import { Center, Text } from 'native-base';
+import { Text, Center } from 'native-base';
 
 export function SignIn() {
-    <Center flex={1} bgColor='gray.900' >
-        <Text color='white' fontSize={24} >SignIn</Text>
-    </Center>
+    return (
+        <Center flex={1} bg='gray.900' >
+            <Text color='white' fontSize={24} fontFamily='heading' >SignIn</Text>
+        </Center>
+    )
 }
