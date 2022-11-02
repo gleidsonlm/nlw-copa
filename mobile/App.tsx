@@ -1,30 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NativeBaseProvider, Text, Center } from "native-base";
 
-import { NativeBaseProvider } from "native-base";
+/* todo: fix for theme.ts file name */
+import { THEME } from './src/styles/theme.js'
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <View style={styles.container}>
-        <Text style={styles.title} >NLW Copa</Text>
+    <NativeBaseProvider theme={THEME}>
+      <Center flex={1} bgColor='gray.900' >
+        <Text color='white' fontSize={24} >NLW Copa</Text>
         <StatusBar style="auto" />
-      </View>
+      </Center>
     </NativeBaseProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black' ,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: 'white',
-  }
-});
