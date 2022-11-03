@@ -15,15 +15,16 @@ export function Button({ title, type, ...rest } : Props) {
             textTransform='uppercase'
             bg= { type === 'SECONDARY' ? 'red.500' : 'yellow.500' }
             _pressed={{
-                bg: type === 'SECONDARY' ? 'red.400' : 'yellow.400'
+                bg: type === 'SECONDARY' ? 'red.400' : 'yellow.600'
             }}
             _loading={{
                 _spinner: { color: "white" }
               }}        
             {...rest}>
                 <Text
-                    fontSize='sm'
+                    fontSize='md'
                     fontFamily='heading'
+                    textTransform='uppercase'
                     color={ type === 'SECONDARY' ? 'white' : 'black' }
                 >
                     {title}
