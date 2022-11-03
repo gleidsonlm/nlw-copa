@@ -1,5 +1,6 @@
-import Fastify, { fastify } from "fastify";
-import cors from "@fastify/cors";
+import Fastify, { fastify } from 'fastify';
+import cors from '@fastify/cors';
+import { z } from 'zod'
 import { PrismaClient } from '@prisma/client';
 
 /* Logging Prisma on Console */
@@ -22,9 +23,19 @@ async function bootstrap() {
     
     // GET /pools/count return the number of pools (pt-br: enquete | bolão)
     fastify.get('/pools/count', async() => { 
-    const count = await prisma.pool.count();
-    return { count }
+        const count = await prisma.pool.count();
+        return { count }
     });
+
+    // POST /pools adds new pool
+    fastify.post('/pools', async(request,reply) => { 
+        const createPoolBody = z.object({
+            title: z.string(),
+        })
+        const { title } = request.body;
+        return reply.status(201).send({ title })
+        });
+    
 
     /* listen on port 3333 */
     await fastify.listen({
