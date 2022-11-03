@@ -13,9 +13,9 @@ export function SignIn() {
 
             <Button
                 title='Sign in with Google'
-                leftIcon={
-                    <Icon as={FontAwesome} name="google" color="white" size="md" />
-                }
+                leftIcon={ <Icon as={FontAwesome} name="google" color="white" size="md" /> }
+                type='SECONDARY'
+                // isLoading={true}
             />
         </Center>
     )
