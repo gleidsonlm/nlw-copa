@@ -21,10 +21,23 @@ async function bootstrap() {
     })
 
     /* Routes */
+    //(pt-br: enquete | bolão)
     
-    // GET /pools/count return the number of pools (pt-br: enquete | bolão)
+    // GET /pools/count return the number of pools 
     fastify.get('/pools/count', async() => { 
         const count = await prisma.pool.count();
+        return { count }
+    });
+
+    // GET /users/count return the number of users 
+    fastify.get('/users/count', async() => { 
+        const count = await prisma.user.count();
+        return { count }
+    });
+
+    // GET /guesses/count return the number of guesses 
+    fastify.get('/guesses/count', async() => { 
+        const count = await prisma.guess.count();
         return { count }
     });
 
