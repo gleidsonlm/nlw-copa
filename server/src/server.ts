@@ -1,6 +1,7 @@
 import Fastify, { fastify } from 'fastify';
 import cors from '@fastify/cors';
 import { z } from 'zod'
+import ShortUniqueId from 'short-unique-id'
 import { PrismaClient } from '@prisma/client';
 
 /* Logging Prisma on Console */
@@ -32,8 +33,20 @@ async function bootstrap() {
         const createPoolBody = z.object({
             title: z.string(),
         })
-        const { title } = request.body;
-        return reply.status(201).send({ title })
+        const { title } = createPoolBody.parse(request.body);
+        const generate = new ShortUniqueId({length:6});
+        const code = String(generate()).toUpperCase();
+
+        // Create pool within database with prisma
+        await prisma.pool.create({
+            data: {
+                title,
+                code
+            }
+
+        })
+        
+        return reply.status(201).send({ code })
         });
     
 
