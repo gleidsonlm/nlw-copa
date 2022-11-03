@@ -25,10 +25,10 @@
     "expo-app-loading": "~2.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "react-native-svg-transformer": "*"
   },
   "overrides": {
     "react": "18.0.0"
-  },
-  "private": true
+  }
 }
