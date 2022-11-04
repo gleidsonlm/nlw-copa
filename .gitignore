@@ -1,6 +1,7 @@
 # Other
 .DS_Store
 .vscode
+*.apps.googleusercontent.com.json
 
 # Logs
 logs
