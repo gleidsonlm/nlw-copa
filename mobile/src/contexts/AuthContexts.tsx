@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import * as Google from 'expo-auth-session/providers/google';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
@@ -22,6 +22,8 @@ export interface AuthProviderProps {
 export const AuthContext = createContext( {} as AuthContextDataProps );
 
 export function AuthContextProvider({ children }:AuthProviderProps){
+    // state with user information given by Google.response
+    const [user, setUser] = useState<UserProps>({} as UserProps);
     // state if the user is going through oauth or not.
     const [isUserLoading, setIsUserLoading] = useState(false);
 
@@ -34,21 +36,33 @@ export function AuthContextProvider({ children }:AuthProviderProps){
     async function signIn(){ 
         try {
             setIsUserLoading(true);
+            await promptAsync();
         } catch (error) {
-            
+            console.log(error);
+            throw error;
         } finally {
             setIsUserLoading(false);
         }
     }
 
+    async function signInWithGoogle (access_token: string) {
+        console.log(access_token);
+    }
+
+    // useEffect will listen to Google.response
+    useEffect(() => {
+        if(response?.type === 'success' && response.authentication?.accessToken) {
+            signInWithGoogle(response.authentication.accessToken);
+        }
+    },
+    [response]
+    );
+
     return (
         <AuthContext.Provider value={{
             signIn,
             isUserLoading,
-            user: {
-                name: 'gleidsonlm',
-                avatarURL: 'https://github.com/gleidsonlm.png',
-            }
+            user
         }}>
             { children }
         </AuthContext.Provider>
