@@ -1,9 +1,6 @@
-import { VStack, Heading, Text, Icon } from "native-base";
+import { VStack, Icon } from "native-base";
 import { Header } from "../components/Header";
-import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import Logo from "../assets/logo.svg";
-import { ButtonIcon } from "../components/ButtonIcon";
 import { FontAwesome } from '@expo/vector-icons'
 
 export function Pools() {
