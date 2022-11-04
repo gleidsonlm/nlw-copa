@@ -21,7 +21,7 @@ export const AuthContext = createContext(
 export function AuthContextProvider({ children }:AuthProviderProps){
     async function signIn(){ 
         console.log('logged in')
-     }
+    }
 
     return (
         <AuthContext.Provider value={{
