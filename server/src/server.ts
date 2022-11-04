@@ -1,6 +1,6 @@
 import Fastify, { fastify } from 'fastify';
 import cors from '@fastify/cors';
-import { prisma } from './lib/prisma';
+import jwt from '@fastify/jwt';
 import { poolRoutes } from './routes/pool';
 import { userRoutes } from './routes/user';
 import { guessRoutes } from './routes/guess';
@@ -17,6 +17,11 @@ async function bootstrap() {
     /* Fastify Cors register all origin in dev env. */
     await fastify.register(cors, {
         origin: true,
+    })
+
+    /* Fastify JWT to tokenize auth */
+    await fastify.register(jwt,{
+        secret: "2NMe4Ii4lgFm1KsolwDG8ryrqTa4mxGan5WkBq8asNi2LOHmZhOBDEKSxDeIl+n1uI46FE8pwgDyPGt8zNZP8rPmBPrF2LEX+sWLQS7rx0N9RbEQfV4vsrmpQbtTOPSsOPOtDr47CosB17NqhSxGq/C5bu+1yUBuKUIVnOl4UksMldIuee4+Gqg5kJYFKVMK9zvzX3gx8nIDY+s26nwk/VgYddCzasFTQnD6A==",
     })
 
     /* Routes */
