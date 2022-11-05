@@ -111,11 +111,10 @@ export async function poolRoutes(fastify: FastifyInstance){
             where: {
                 code,
             },
-            // check if already a participant
             include: {
                 participants: {
                     where: {
-                        userId : request.user.sub,
+                        userId: request.user.sub,
                     }
                 }
             }
@@ -124,6 +123,12 @@ export async function poolRoutes(fastify: FastifyInstance){
         if(!pool){
             return reply.code(404).send({
                 message: 'Pool not found.'
+            })
+        }
+
+        if (pool.participants.length > 0) {
+            return reply.code(409).send({
+                message: 'Pool already joined.'
             })
         }
 
