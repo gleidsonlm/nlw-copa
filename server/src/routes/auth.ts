@@ -2,6 +2,7 @@ import { prisma } from '../lib/prisma'
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { authenticate } from '../plugins/authenticate';
+import axios from 'axios';
 
 export async function authRoutes(fastify: FastifyInstance){
 
@@ -19,13 +20,14 @@ export async function authRoutes(fastify: FastifyInstance){
         })
         const { access_token } = createUserBody.parse(request.body)
         
-        const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-            method: 'GET',
+        const userResponse = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
             headers: {
+                Accept: 'application/json',
                 'Authorization': `Bearer ${access_token}`,
+                'Content-Type': 'application/json'
             }
         })
-        const userData = await userResponse.json()
+        const userData = await userResponse.data;
 
         const userInfoSchema = z.object({
             id: z.string(),
@@ -33,7 +35,8 @@ export async function authRoutes(fastify: FastifyInstance){
             name: z.string(),
             picture: z.string().url(),
         })
-        const userInfo = userInfoSchema.parse(userData)
+        const userInfo = userInfoSchema.parse(userData);
+        console.log(userInfo);
 
         let user = await prisma.user.findUnique({
             where : { googleId: userInfo.id, }
@@ -59,7 +62,7 @@ export async function authRoutes(fastify: FastifyInstance){
                 expiresIn: '7 days'
             }
         )
-
-        return { userInfo }
+            
+        return { token }
     })
 }
