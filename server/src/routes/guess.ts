@@ -9,13 +9,6 @@ export async function guessRoutes(fastify: FastifyInstance){
         { onRequest : [authenticate] },
         async (request, reply) => {
 
-/*             // validate game exists
-            const gameExists = await prisma.game.exists({
-                poolId,
-                gameId,
-            });
-*/
-
             // validate guess route params with zod
             const createGuessParams = z.object({
                 poolId: z.string(),
@@ -31,12 +24,64 @@ export async function guessRoutes(fastify: FastifyInstance){
             //parse guess route params to validate
             const { firstTeamPoints, secondTeamPoints } = createGuessBody.parse(request.body);
 
-            return {
-                poolId,
-                gameId,
-                firstTeamPoints,
-                secondTeamPoints,
+            /* Start validations before creating the guess */
+            // participant of the current pool?
+            const participant = await prisma.participant.findUnique({
+                where: {
+                    userId_poolId: {
+                        poolId,
+                        userId: request.user.sub,
+                    }
+                }
+            })
+            // if not a participant, send error message
+            if (!participant) {
+                return reply.status(400).send({
+                    message: 'You are not in this group.'
+                })
             }
+
+            // there's already a guess of this participant?
+            const guess = await prisma.guess.findUnique({
+                where: {
+                    participantId_gameId: {
+                    participantId: participant.id,
+                        gameId
+                    }
+                }
+            })
+            if (guess) {
+                return reply.status(400).send({
+                    message: 'You have already confirmed your prediction.'
+                })
+            }
+
+            // there's the game and it has not started.
+            const game = await prisma.game.findUnique({
+                where: { id: gameId },
+            })
+            if (!game) {
+                return reply.status(400).send({
+                    message: 'Game not found.'
+                })
+            } else if (game.date < new Date()) {
+                return reply.status(400).send({
+                    message: 'You cannot send predictions after the game.'
+                })
+            }
+
+            // after validations passes, create the guess
+            await prisma.guess.create({
+                data: {
+                    gameId,
+                    participantId: participant.id,
+                    firstTeamPoints,
+                    secondTeamPoints,
+                }
+            })
+
+            // reply 201 without content
+            return reply.status(201).send()
 
         });
 
