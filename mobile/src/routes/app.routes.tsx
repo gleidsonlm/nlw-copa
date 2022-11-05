@@ -2,8 +2,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { New } from '../screens/New';
 import { Pools } from '../screens/Pools';
 import { PlusCircle, SoccerBall } from 'phosphor-react-native';
-import { useTheme } from 'native-base';
+import { Hidden, useTheme } from 'native-base';
 import { Platform } from 'react-native';
+import { Find } from '../screens/Find';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -20,7 +21,7 @@ export function AppRoutes() {
         tabBarInactiveTintColor: colors.gray[300],
         tabBarStyle: {
             position: 'absolute',
-            height: sizes[22],
+            height: sizes[20],
             borderTopWidth: 0,
             backgroundColor: colors.gray[800],
         },
@@ -48,6 +49,13 @@ export function AppRoutes() {
                 tabBarLabel: 'My Groups',
             }}
         />
+
+        <Screen 
+            name="find"
+            component={Find}
+            options={{ tabBarButton: () => null }}
+        />
+
     </Navigator>    
     )
 }

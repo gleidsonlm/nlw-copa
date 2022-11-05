@@ -1,9 +1,12 @@
 import { VStack, Icon } from "native-base";
+import { FontAwesome } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native';
 import { Header } from "../components/Header";
 import { Button } from "../components/Button";
-import { FontAwesome } from '@expo/vector-icons'
 
 export function Pools() {
+    const { navigate } = useNavigation();
+
     return (
         <VStack flex={1} bgColor="gray.900">
 
@@ -14,6 +17,7 @@ export function Pools() {
                 <Button
                     title='SEARCH GROUP BY CODE'
                     leftIcon={<Icon as ={FontAwesome} name="search" color="black" size="md"/>}
+                    onPress={() => navigate('find')}
                 />
             </VStack>
 

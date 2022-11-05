@@ -2,6 +2,8 @@ import { VStack, Heading } from "native-base";
 import { Header } from "../components/Header";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { NavigationContainer } from '@react-navigation/native';
+
 
 export function Find() {
     return (
