@@ -47,12 +47,17 @@ export function AuthContextProvider({ children }:AuthProviderProps){
     }
 
     async function signInWithGoogle (access_token: string) {
-        console.log(access_token);
         try {
             setIsUserLoading(true);
 
             const tokenResponse = await api.post('/users',{ access_token });
-            console.log(tokenResponse.data.token)
+            // setting api default with authenticated user token
+            api.defaults.headers.common['Authorization'] = `Bearer ${tokenResponse.data.token}`;
+
+            // reques api /me to retrieve user information
+            const userInfoResponse = await api.get('/me');
+            // and setState with them
+            setUser(userInfoResponse.data.user);
 
         } catch (error) {
             console.log(error);
