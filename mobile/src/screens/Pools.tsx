@@ -42,7 +42,7 @@ export function Pools() {
     // callback function when screen is on focus
     useFocusEffect(useCallback(() => {
         fetchPools();
-    },[]))
+    },[]));
 
 
 /*     useEffect(() => {
