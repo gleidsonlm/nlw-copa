@@ -1,7 +1,8 @@
 import { Platform } from 'react-native';
-import { useTheme } from 'native-base';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PlusCircle, SoccerBall } from 'phosphor-react-native';
+import { useTheme } from 'native-base';
+
 import { New } from '../screens/New';
 import { Pools } from '../screens/Pools';
 import { Find } from '../screens/Find';
@@ -10,59 +11,57 @@ import { Details } from '../screens/Details';
 const { Navigator, Screen } = createBottomTabNavigator();
 
 export function AppRoutes() {
-    // use colors from react native theme
-    const { colors, sizes } = useTheme();
-    // standarize icon size
-    const iconSize = sizes[8];
-    return (
+
+  const { colors, sizes } = useTheme();
+
+  const size = sizes[6]
+
+  return (
     <Navigator screenOptions={{
-        headerShown: false,
-        tabBarLabelPosition: 'beside-icon',
-        tabBarActiveTintColor: colors.yellow[500],
-        tabBarInactiveTintColor: colors.gray[300],
-        tabBarStyle: {
-            position: 'absolute',
-            height: sizes[20],
-            borderTopWidth: 0,
-            backgroundColor: colors.gray[800],
-        },
-        tabBarItemStyle: {
-            position: 'relative',
-            top: Platform.OS === 'android' ? -10 : 0,
-        }
-    }}
-    >
+      headerShown: false,
+      tabBarLabelPosition: 'beside-icon',
+      tabBarActiveTintColor: colors.yellow[500],
+      tabBarInactiveTintColor: colors.gray[300],
+      tabBarStyle: {
+        position: 'absolute',
+        height: sizes[22],
+        borderTopWidth: 0,
+        backgroundColor: colors.gray[800]
+      },
+      tabBarItemStyle: {
+        position: 'relative',
+        top: Platform.OS === 'android' ? -10 : 0
+      }
+    }}>
+      <Screen 
+        name="new"
 
-        <Screen
-            name="new"
-            component={New}
-            options={{ 
-                tabBarIcon: ({color}) => <PlusCircle color={color} size={iconSize} />,
-                tabBarLabel: 'Create Group',
-            }}
-        />
+        component={New}
+        options={{
+          tabBarIcon: ({ color }) => <PlusCircle color={color} size={size} />,
+          tabBarLabel: 'Novo bolão'
+        }}
+      />
+      <Screen 
+        name="pools"
+        component={Pools}
+        options={{
+          tabBarIcon: ({ color }) => <SoccerBall color={color} size={size} />,
+          tabBarLabel: 'Meus bolões'
+        }}
+      />
 
-        <Screen
-            name="pools"
-            component={Pools}
-            options={{ 
-                tabBarIcon: ({color}) => <SoccerBall color={color} size={iconSize}/>, 
-                tabBarLabel: 'My Groups',
-            }}
-        />
+      <Screen 
+        name="find"
+        component={Find}
+        options={{ tabBarButton: () => null }}
+      />
 
-        <Screen 
-            name="find"
-            component={Find}
-            options={{ tabBarButton: () => null }}
-        />
-
-        <Screen 
-            name="details"
-            component={Details}
-            options={{ tabBarButton: () => null }}
-        />
-
-    </Navigator>    
-    )
+      <Screen 
+        name="details"
+        component={Details}
+        options={{ tabBarButton: () => null }}
+      />
+    </Navigator>
+  )
 }

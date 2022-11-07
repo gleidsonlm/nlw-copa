@@ -1,11 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// Adding Prisma ERD Generator
 generator erd {
   provider = "prisma-erd-generator"
 }
@@ -16,58 +12,61 @@ datasource db {
 }
 
 model Pool {
-  id String @id @default(cuid())
-  title String
-  code String @unique
-  created DateTime @default(now())
-  ownerId String?
+  id        String   @id @default(cuid())
+  title     String
+  code      String   @unique
+  createdAt DateTime @default(now())
+  ownerId   String?
 
   participants Participant[]
-  owner User? @relation(fields: [ownerId],references: [id])
+  owner        User?         @relation(fields: [ownerId], references: [id])
 }
 
 model Participant {
-  id String @id @default(cuid())
+  id     String @id @default(cuid())
   userId String
   poolId String
 
-  user User @relation(fields:[userId], references: [id])
   guesses Guess[]
-  pool Pool @relation(fields: [poolId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  pool    Pool    @relation(fields: [poolId], references: [id])
 
-  @@unique([userId,poolId])
+  @@unique([userId, poolId])
 }
 
 model User {
-  id String @id @default(cuid())
-  name String
-  email String @unique
-  googleId String? @unique
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  googleId  String?  @unique
   avatarUrl String?
   createdAt DateTime @default(now())
 
-  ownPools Pool[]
-  participantAt Participant[]
+  participatingAt Participant[]
+  ownPools        Pool[]
 }
 
 model Game {
-  id String @id @default(cuid())
+  id   String   @id @default(cuid())
   date DateTime
-  firstTeamCountryCode String
+
+  firstTeamCountryCode  String
   secondTeamCountryCode String
+
   guesses Guess[]
 }
 
 model Guess {
   id String @id @default(cuid())
-  firstTeamPoints Int
+
+  firstTeamPoints  Int
   secondTeamPoints Int
-  createdAt DateTime @default(now())
-  gameId String
-  participantId String
+  createdAt        DateTime @default(now())
+  gameId           String
+  participantId    String
 
   participant Participant @relation(fields: [participantId], references: [id])
-  game Game @relation(fields: [gameId], references:[id])
+  game        Game        @relation(fields: [gameId], references: [id])
 
   @@unique([participantId, gameId])
 }

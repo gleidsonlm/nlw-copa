@@ -1,72 +1,61 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"
+
 const prisma = new PrismaClient()
 
 async function main() {
-    /* To add an user */
-    const user = await prisma.user.create({
-        data: {
-            name: 'Gleidson Medeiros',
-            email: 'contact@gleidsonlm.com',
-            avatarUrl : 'https://github.com/gleidsonlm'
-        }
-    })
+  const user = await prisma.user.create({
+    data: {
+      name: 'John Doe',
+      email: 'john.doe@gmail.com',
+      avatarUrl: 'https://github.com/diego3g.png',
+    }
+  });
 
-    /* To add a owned pool */
-    const pool = await prisma.pool.create({
-        data: {
-            title: 'BigHead SuperBetGroup',
-            code: 'bighead',
-            ownerId: user.id,
-        
-        /* Using Prisma connect to create the participant as well */
-            participants: {
-                create: {
-                    userId: user.id
-                }
+  const pool = await prisma.pool.create({
+    data: {
+      title: 'Example Pool',
+      code: 'BOL123',
+      ownerId: user.id,
+
+      participants: {
+        create: {
+          userId: user.id,
+        }
+      }
+    }
+  });
+
+  await prisma.game.create({
+    data: {
+      date: '2022-11-02T12:00:00.201Z',
+      firstTeamCountryCode: 'DE',
+      secondTeamCountryCode: 'BR',
+    }
+  })
+
+  await prisma.game.create({
+    data: {
+      date: '2022-11-03T12:00:00.201Z',
+      firstTeamCountryCode: 'BR',
+      secondTeamCountryCode: 'AR',
+
+      guesses: {
+        create: {
+          firstTeamPoints: 2,
+          secondTeamPoints: 1,
+
+          participant: {
+            connect: {
+              userId_poolId: {
+                userId: user.id,
+                poolId: pool.id,
+              }
             }
+          }
         }
-    })
-
-    /* To add a participant
-    const participant = await prisma.participant.create({
-        data: {
-            userId: user.id,
-            poolId: pool.id
-        }
-    })
-    */
-
-    /* To create games */
-    await prisma.game.create({
-        data: {
-            date: '2022-11-20T16:00:00Z',
-            firstTeamCountryCode: 'QAT',
-            secondTeamCountryCode: 'ECU',
-        }
-    });
-
-    await prisma.game.create({
-        data: {
-            date: '2022-11-21T13:00:00Z',
-            firstTeamCountryCode: 'ENG',
-            secondTeamCountryCode: 'IRE',
-
-            guesses: {
-                create: {
-                    firstTeamPoints: 4,
-                    secondTeamPoints: 1,
-                    participant: {
-                        connect: {
-                            userId_poolId: {
-                                userId: user.id,
-                                poolId: pool.id
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    });
+      }
+    },
+  })
 }
 
 main()

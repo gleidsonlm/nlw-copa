@@ -1,6 +1,6 @@
 import { extendTheme } from 'native-base';
 
-export const themeCopa = extendTheme({
+export const THEME = extendTheme({
   colors: {
     gray: {
       950: '#09090A',
