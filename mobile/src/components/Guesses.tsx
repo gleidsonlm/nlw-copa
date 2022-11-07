@@ -30,7 +30,7 @@ export function Guesses({ poolId, code, onShare }: Props) {
       console.log(err);
       toast.show({
         title:
-          "Sorry, coun't retrive matchs clientInformation. Please, try again.",
+        "Sorry, coun't retrive matchs clientInformation. Please, try again.",
         placement: 'top',
         bgColor: 'red.500',
       });
@@ -46,10 +46,10 @@ export function Guesses({ poolId, code, onShare }: Props) {
         placement: 'top',
         bgColor: 'red.500',
       });
-    }
+   } 
+
     try {
       setIsLoading(true);
-
       await api.post(`/pools/${poolId}/games/${gameId}/guesses`, {
         firstTeamPoints: Number(firstTeamPoints),
         secondTeamPoints: Number(secondTeamPoints),
@@ -60,26 +60,26 @@ export function Guesses({ poolId, code, onShare }: Props) {
         placement: 'top',
         bgColor: 'green.500',
       });
-     
-      // callback reloads the screen with updated data
+
+    // callback reloads the screen with updated data
       fetchGames();
 
     } catch (err) {
       console.log(err);
       toast.show({
         title:
-          "Ops, sorry. We couldn't register your prediction. Please, try again",
+        "Ops, sorry. We couldn't register your prediction. Please, try again",
         placement: 'top',
         bgColor: 'red.500',
       });
-    
+
     } finally {
       setIsLoading(false);
     }
   }
   // callback when screen render complete
   useEffect(() => { fetchGames(); }
-    // screen reloads on useState { poolId }
+  // screen reloads on useState { poolId }
     ,[poolId]);
 
   if (isLoading) {
@@ -100,7 +100,7 @@ export function Guesses({ poolId, code, onShare }: Props) {
       )}
       _contentContainerStyle={{ pb: 10 }}
       ListEmptyComponent={() => (
-        <EmptyMyPoolList code={code} onShare={onShare} />
+      <EmptyMyPoolList code={code} onShare={onShare} />
       )}
     />
   );

@@ -1,31 +1,42 @@
-import { Row, Text, Pressable } from 'native-base';
+import { Row, Text, Pressable } from "native-base";
 
 interface Props {
   code: string;
+  onShare: () => void;
 }
 
-export function EmptyMyPoolList({ code }: Props) {
+export function EmptyMyPoolList({ code, onShare }: Props) {
+
   return (
     <Row flexWrap="wrap" justifyContent="center" p={4}>
       <Text color="gray.200" fontSize="sm">
-        Esse bolão ainda não tem participantes, que tal 
+        How about to {' '}
       </Text>
 
-      <Pressable onPress={() => {}}>
-          <Text textDecorationLine="underline" color="yellow.500" textDecoration="underline">
-          compartilhar o código
-          </Text>
+      <Pressable onPress={() => onShare}>
+        <Text
+          textDecorationLine="underline"
+          color="yellow.500"
+          textDecoration="underline"
+          >
+          share the code
+        </Text>
       </Pressable>
 
       <Text color="gray.200" fontSize="sm" mx={1}>
-        do bolão com alguém?
+        and invite your friends?
       </Text>
 
       <Text color="gray.200" mr={1}>
-        Use o código
+        Use the code
       </Text>
-      
-      <Text color="gray.200" fontSize="sm" textAlign="center" fontFamily="heading"> 
+
+      <Text
+        color="gray.200"
+        fontSize="sm"
+        textAlign="center"
+        fontFamily="heading"
+      >
         {code}
       </Text>
     </Row>
