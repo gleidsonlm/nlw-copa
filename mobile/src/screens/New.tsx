@@ -60,9 +60,7 @@ export function New() {
                     Create your own predictions and share with friends!
                 </Heading>
 
-                <Input
-                    mb={2}
-                    placeholder="What's your group name?"
+                <Input mb={2} placeholder="What's your group name?"
                     onChangeText={setTitle}
                     value={title}
                 />
